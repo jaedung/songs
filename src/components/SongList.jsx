@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import { selectSong } from "../actions";
+
 class SongList extends Component {
   renderList() {
     // this.props === { songs: state.songs };
@@ -9,7 +11,12 @@ class SongList extends Component {
       return (
         <div className="item" key={song.title}>
           <div className="right floated content">
-            <button className="ui button primary">Select</button>
+            <button
+              className="ui button primary"
+              onClick={() => this.props.selectSong(song)}
+            >
+              Select
+            </button>
           </div>
           <div className="content">{song.title}</div>
         </div>
@@ -22,8 +29,11 @@ class SongList extends Component {
   }
 }
 
+// this function is invoked every time redux state is updated.
 const mapStateToProps = state => {
   return { songs: state.songs };
 };
 
-export default connect(mapStateToProps)(SongList);
+// when we pass action creators to connect function, it will automayically
+// dispatch an action returned from an action creator to update the redux state.
+export default connect(mapStateToProps, { selectSong })(SongList);
